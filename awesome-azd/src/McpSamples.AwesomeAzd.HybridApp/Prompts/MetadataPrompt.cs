@@ -67,11 +67,11 @@ public class TemplatePrompt : ITemplatePrompt
                `https://github.com/Azure-Samples/...`,  
                then use only the repository name:
                ```
-               e.g. azd init -t app-templates-java-openai-springapps
+               e.g. azd init -t Azure-Samples/azure-openai-chat-frontend
                ```
              - Otherwise, include the full `owner/repo` path:
                ```
-               e.g. azd init -t pascalvanderheiden/ais-apim-odata-reactjs
+               e.g. azd init -t pascalvanderheiden/ais-apim-openai
                ```
         """;
     }
