@@ -59,13 +59,13 @@ public class TemplatePrompt : ITemplatePrompt
 
         1. If the user wants to execute this template, provide a command guide using the following rule:
            - Use the syntax:  
-             ```
+             ``
              azd init -t <path>
              ```
            - `<path>` is determined as follows:
              - If the GitHub source URL starts with  
                `https://github.com/Azure-Samples/...`,  
-               then use only the repository name:
+               then use the organization/repository name:
                ```
                e.g. azd init -t Azure-Samples/azure-openai-chat-frontend
                ```
