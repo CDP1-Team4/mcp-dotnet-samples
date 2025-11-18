@@ -44,9 +44,8 @@ public static class HostApplicationBuilderExtensions
 
             var webApp = (builder as WebApplicationBuilder)!.Build();
 
-            // Configure the HTTP request pipeline.
-            // Note: Skip HTTPS redirection in Azure Functions environment (uses HTTP only)
-            if (!IsAzureFunctionsEnvironment())
+            // Disable HTTPS redirection in development environment to avoid issues with self-signed certificates
+            if (!webApp.Environment.IsDevelopment())
             {
                 webApp.UseHttpsRedirection();
             }
