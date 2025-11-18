@@ -473,6 +473,35 @@
       ]
     },
     {
+      "filename": "expert-nextjs-developer.chatmode.md",
+      "description": "Expert Next.js 16 developer specializing in App Router, Server Components, Cache Components, Turbopack, and modern React patterns with TypeScript",
+      "model": "GPT-4.1",
+      "tools": [
+        "changes",
+        "codebase",
+        "edit/editFiles",
+        "extensions",
+        "fetch",
+        "findTestFiles",
+        "githubRepo",
+        "new",
+        "openSimpleBrowser",
+        "problems",
+        "runCommands",
+        "runNotebooks",
+        "runTasks",
+        "runTests",
+        "search",
+        "searchResults",
+        "terminalLastCommand",
+        "terminalSelection",
+        "testFailure",
+        "usages",
+        "vscodeAPI",
+        "figma-dev-mode-mcp-server"
+      ]
+    },
+    {
       "filename": "expert-react-frontend-engineer.chatmode.md",
       "description": "Expert React 19.2 frontend engineer specializing in modern hooks, Server Components, Actions, TypeScript, and performance optimization",
       "tools": [
@@ -601,7 +630,7 @@
       "description": "Perform janitorial tasks on any codebase including cleanup, simplification, and tech debt remediation.",
       "tools": [
         "changes",
-        "codebase",
+        "search/codebase",
         "edit/editFiles",
         "extensions",
         "fetch",
@@ -614,9 +643,9 @@
         "runTasks",
         "runTests",
         "search",
-        "searchResults",
-        "terminalLastCommand",
-        "terminalSelection",
+        "search/searchResults",
+        "runCommands/terminalLastCommand",
+        "runCommands/terminalSelection",
         "testFailure",
         "usages",
         "vscodeAPI",
@@ -720,6 +749,70 @@
       "model": "GPT-4.1"
     },
     {
+      "filename": "microsoft-agent-framework-dotnet.chatmode.md",
+      "description": "Create, update, refactor, explain or work with code using the .NET version of Microsoft Agent Framework.",
+      "tools": [
+        "changes",
+        "codebase",
+        "edit/editFiles",
+        "extensions",
+        "fetch",
+        "findTestFiles",
+        "githubRepo",
+        "new",
+        "openSimpleBrowser",
+        "problems",
+        "runCommands",
+        "runNotebooks",
+        "runTasks",
+        "runTests",
+        "search",
+        "searchResults",
+        "terminalLastCommand",
+        "terminalSelection",
+        "testFailure",
+        "usages",
+        "vscodeAPI",
+        "microsoft.docs.mcp",
+        "github"
+      ],
+      "model": "claude-sonnet-4"
+    },
+    {
+      "filename": "microsoft-agent-framework-python.chatmode.md",
+      "description": "Create, update, refactor, explain or work with code using the Python version of Microsoft Agent Framework.",
+      "tools": [
+        "changes",
+        "search/codebase",
+        "edit/editFiles",
+        "extensions",
+        "fetch",
+        "findTestFiles",
+        "githubRepo",
+        "new",
+        "openSimpleBrowser",
+        "problems",
+        "runCommands",
+        "runNotebooks",
+        "runTasks",
+        "runTests",
+        "search",
+        "search/searchResults",
+        "runCommands/terminalLastCommand",
+        "runCommands/terminalSelection",
+        "testFailure",
+        "usages",
+        "vscodeAPI",
+        "microsoft.docs.mcp",
+        "github",
+        "configurePythonEnvironment",
+        "getPythonEnvironmentInfo",
+        "getPythonExecutableCommand",
+        "installPythonPackage"
+      ],
+      "model": "claude-sonnet-4"
+    },
+    {
       "filename": "microsoft-study-mode.chatmode.md",
       "description": "Activate your personal Microsoft/Azure tutor - learn through guided discovery, not just answers.",
       "tools": [
@@ -764,6 +857,20 @@
       "filename": "php-mcp-expert.chatmode.md",
       "description": "Expert assistant for PHP MCP server development using the official PHP SDK with attribute-based discovery",
       "model": "GPT-4.1"
+    },
+    {
+      "filename": "pimcore-expert.chatmode.md",
+      "description": "Expert Pimcore development assistant specializing in CMS, DAM, PIM, and E-Commerce solutions with Symfony integration",
+      "model": "GPT-4.1 | 'gpt-5' | 'Claude Sonnet 4.5'",
+      "tools": [
+        "codebase",
+        "terminalCommand",
+        "edit/editFiles",
+        "fetch",
+        "githubRepo",
+        "runTests",
+        "problems"
+      ]
     },
     {
       "filename": "plan.chatmode.md",
@@ -1026,7 +1133,7 @@
     },
     {
       "filename": "prompt-engineer.chatmode.md",
-      "description": "A specialized chat mode for analyzing and improving prompts. Every user input is treated as a propt to be improved. It first provides a detailed analysis of the original prompt within a <reasoning> tag, evaluating it against a systematic framework based on OpenAI's prompt engineering best practices. Following the analysis, it generates a new, improved prompt."
+      "description": "A specialized chat mode for analyzing and improving prompts. Every user input is treated as a prompt to be improved. It first provides a detailed analysis of the original prompt within a <reasoning> tag, evaluating it against a systematic framework based on OpenAI's prompt engineering best practices. Following the analysis, it generates a new, improved prompt."
     },
     {
       "filename": "python-mcp-expert.chatmode.md",
@@ -1937,6 +2044,16 @@
       "description": "Guidelines for localizing markdown documents",
       "applyTo": [
         "**/*.md"
+      ]
+    },
+    {
+      "filename": "makefile.instructions.md",
+      "description": "Best practices for authoring GNU Make Makefiles",
+      "applyTo": [
+        "**/Makefile",
+        "**/makefile",
+        "**/*.mk",
+        "**/GNUmakefile"
       ]
     },
     {
@@ -3314,6 +3431,11 @@
       "description": "Guide users through creating high-quality GitHub Copilot prompts with proper structure, tools, and best practices."
     },
     {
+      "filename": "pytest-coverage.prompt.md",
+      "agent": "agent",
+      "description": "Run pytest tests with coverage, discover lines missing coverage, and increase coverage to 100%."
+    },
+    {
       "filename": "python-mcp-server-generator.prompt.md",
       "mode": "agent",
       "description": "Generate a complete MCP server project in Python with tools, resources, and proper configuration"
@@ -4241,11 +4363,23 @@
           "kind": "agent"
         },
         {
+          "path": "agents/apify-integration-expert.agent.md",
+          "kind": "agent"
+        },
+        {
           "path": "agents/arm-migration.agent.md",
           "kind": "agent"
         },
         {
+          "path": "agents/droid.agent.md",
+          "kind": "agent"
+        },
+        {
           "path": "agents/dynatrace-expert.agent.md",
+          "kind": "agent"
+        },
+        {
+          "path": "agents/elasticsearch-observability.agent.md",
           "kind": "agent"
         },
         {
@@ -4257,11 +4391,27 @@
           "kind": "agent"
         },
         {
+          "path": "agents/monday-bug-fixer.agent.md",
+          "kind": "agent"
+        },
+        {
+          "path": "agents/mongodb-performance-advisor.agent.md",
+          "kind": "agent"
+        },
+        {
+          "path": "agents/neo4j-docker-client-generator.agent.md",
+          "kind": "agent"
+        },
+        {
           "path": "agents/neon-migration-specialist.agent.md",
           "kind": "agent"
         },
         {
           "path": "agents/neon-optimization-analyzer.agent.md",
+          "kind": "agent"
+        },
+        {
+          "path": "agents/newrelic-deployment-observability.agent.md",
           "kind": "agent"
         },
         {
@@ -4845,6 +4995,31 @@
       "description": "This custom agent uses Amplitude's MCP tools to deploy new experiments inside of Amplitude, enabling seamless variant testing capabilities and rollout of product features."
     },
     {
+      "filename": "apify-integration-expert.agent.md",
+      "name": "apify-integration-expert",
+      "description": "Expert agent for integrating Apify Actors into codebases. Handles Actor selection, workflow design, implementation across JavaScript/TypeScript and Python, testing, and production-ready deployment.",
+      "mcp-servers": "",
+      "apify": "",
+      "type": "http",
+      "url": "https://mcp.apify.com",
+      "headers": "",
+      "Authorization": "Bearer $APIFY_TOKEN",
+      "Content-Type": "application/json",
+      "tools": [
+        "fetch-actor-details",
+        "search-actors",
+        "call-actor",
+        "search-apify-docs",
+        "fetch-apify-docs",
+        "get-actor-output"
+      ]
+    },
+    {
+      "filename": "arch.agent.md",
+      "name": "Senior Cloud Architect",
+      "description": "Expert in modern architecture design patterns, NFR requirements, and creating comprehensive architectural diagrams and documentation"
+    },
+    {
       "filename": "arm-migration.agent.md",
       "name": "arm-migration-agent",
       "description": "Arm Cloud Migration Assistant accelerates moving x86 workloads to Arm infrastructure. It scans the repository for architecture assumptions, portability issues, container base image and dependency incompatibilities, and recommends Arm-optimized changes. It can drive multi-arch container builds, validate performance, and guide optimization, enabling smooth cross-platform deployment directly inside GitHub.",
@@ -4872,6 +5047,63 @@
       ]
     },
     {
+      "filename": "comet-opik.agent.md",
+      "name": "Comet Opik",
+      "description": "Unified Comet Opik agent for instrumenting LLM apps, managing prompts/projects, auditing prompts, and investigating traces/metrics via the latest Opik MCP server.",
+      "tools": [
+        "*"
+      ],
+      "mcp-servers": "",
+      "opik": "",
+      "type": "local",
+      "command": "npx",
+      "args": [
+        "-y",
+        "opik-mcp"
+      ],
+      "env": "",
+      "OPIK_API_KEY": "COPILOT_MCP_OPIK_API_KEY",
+      "OPIK_API_BASE_URL": "COPILOT_MCP_OPIK_API_BASE_URL",
+      "OPIK_WORKSPACE_NAME": "COPILOT_MCP_OPIK_WORKSPACE",
+      "OPIK_SELF_HOSTED": "COPILOT_MCP_OPIK_SELF_HOSTED",
+      "OPIK_TOOLSETS": "COPILOT_MCP_OPIK_TOOLSETS",
+      "DEBUG_MODE": "COPILOT_MCP_OPIK_DEBUG"
+    },
+    {
+      "filename": "diffblue-cover.agent.md",
+      "name": "DiffblueCover",
+      "description": "Expert agent for creating unit tests for java applications using Diffblue Cover.",
+      "tools": [
+        "*"
+      ],
+      "mcp-servers": "",
+      "DiffblueCover": "",
+      "type": "local",
+      "command": "uv",
+      "args": [
+        "run",
+        "--with",
+        "fastmcp",
+        "fastmcp",
+        "run",
+        "/placeholder/path/to/cover-mcp/main.py"
+      ],
+      "env": "",
+      "DIFFBLUE_COVER_CLI": "/placeholder/path/to/dcover"
+    },
+    {
+      "filename": "droid.agent.md",
+      "name": "droid",
+      "description": "Provides installation guidance, usage examples, and automation patterns for the Droid CLI, with emphasis on droid exec for CI/CD and non-interactive automation",
+      "tools": [
+        "read",
+        "search",
+        "edit",
+        "shell"
+      ],
+      "model": "claude-sonnet-4-5-20250929"
+    },
+    {
       "filename": "dynatrace-expert.agent.md",
       "name": "Dynatrace Expert",
       "description": "The Dynatrace Expert Agent integrates observability and security capabilities directly into GitHub workflows, enabling development teams to investigate incidents, validate deployments, triage errors, detect performance regressions, validate releases, and manage security vulnerabilities by autonomously analysing traces, logs, and Dynatrace findings. This enables targeted and precise remediation of identified issues directly within the repository.",
@@ -4883,6 +5115,21 @@
       "tools": [
         "*"
       ]
+    },
+    {
+      "filename": "elasticsearch-observability.agent.md",
+      "name": "elasticsearch-agent",
+      "description": "Our expert AI assistant for debugging code (O11y), optimizing vector search (RAG), and remediating security threats using live Elastic data.",
+      "tools": "- read - edit - shell - elastic-mcp/*",
+      "mcp-servers": "",
+      "elastic-mcp": "",
+      "type": "remote",
+      "command": "npx",
+      "args": "[ 'mcp-remote',",
+      "'https": "//{KIBANA_URL}/api/agent_builder/mcp', '--header',",
+      "'Authorization": "${AUTH_HEADER}' ]",
+      "env": "",
+      "AUTH_HEADER": "ApiKey ${{ secrets.ELASTIC_API_KEY }}"
     },
     {
       "filename": "jfrog-sec.agent.md",
@@ -4912,6 +5159,43 @@
       ]
     },
     {
+      "filename": "monday-bug-fixer.agent.md",
+      "name": "Monday Bug Context Fixer",
+      "description": "Elite bug-fixing agent that enriches task context from Monday.com platform data. Gathers related items, docs, comments, epics, and requirements to deliver production-quality fixes with comprehensive PRs.",
+      "tools": [
+        "*"
+      ],
+      "mcp-servers": "",
+      "monday-api-mcp": "",
+      "type": "http",
+      "url": "https://mcp.monday.com/mcp",
+      "headers": "{\"Authorization\": \"Bearer $MONDAY_TOKEN\"}"
+    },
+    {
+      "filename": "mongodb-performance-advisor.agent.md",
+      "name": "mongodb-performance-advisor",
+      "description": "Analyze MongoDB database performance, offer query and index optimization insights and provide actionable recommendations to improve overall usage of the database."
+    },
+    {
+      "filename": "neo4j-docker-client-generator.agent.md",
+      "name": "neo4j-docker-client-generator",
+      "description": "AI agent that generates simple, high-quality Python Neo4j client libraries from GitHub issues with proper best practices",
+      "tools": [
+        "*"
+      ],
+      "mcp-servers": "",
+      "neo4j-local": "",
+      "type": "local",
+      "command": "docker",
+      "args": "[ 'run', '-i', '--rm', '-e', 'NEO4J_URI', '-e', 'NEO4J_USERNAME', '-e', 'NEO4J_PASSWORD', '-e', 'NEO4J_DATABASE', '-e', 'NEO4J_NAMESPACE=neo4j-local', '-e', 'NEO4J_TRANSPORT=stdio',",
+      "'mcp/neo4j-cypher": "latest' ]",
+      "env": "",
+      "NEO4J_URI": "${COPILOT_MCP_NEO4J_URI}",
+      "NEO4J_USERNAME": "${COPILOT_MCP_NEO4J_USERNAME}",
+      "NEO4J_PASSWORD": "${COPILOT_MCP_NEO4J_PASSWORD}",
+      "NEO4J_DATABASE": "${COPILOT_MCP_NEO4J_DATABASE}"
+    },
+    {
       "filename": "neon-migration-specialist.agent.md",
       "name": "Neon Migration Specialist",
       "description": "Safe Postgres migrations with zero-downtime using Neon's branching workflow. Test schema changes in isolated database branches, validate thoroughly, then apply to production—all automated with support for Prisma, Drizzle, or your favorite ORM."
@@ -4920,6 +5204,19 @@
       "filename": "neon-optimization-analyzer.agent.md",
       "name": "Neon Performance Analyzer",
       "description": "Identify and fix slow Postgres queries automatically using Neon's branching workflow. Analyzes execution plans, tests optimizations in isolated database branches, and provides clear before/after performance metrics with actionable code fixes."
+    },
+    {
+      "filename": "newrelic-deployment-observability.agent.md",
+      "name": "New Relic Deployment Observability Agent",
+      "description": "Assists engineers before and after deployments by optimizing New Relic instrumentation, linking code changes to telemetry via change tracking, validating alerts and dashboards, and summarizing production health and next steps.",
+      "tools": [
+        "*"
+      ],
+      "mcp-servers": "",
+      "newrelic": "",
+      "type": "http",
+      "url": "https://mcp.newrelic.com/mcp",
+      "headers": "{\"Api-Key\": \"$COPILOT_MCP_NEW_RELIC_API_KEY\"}"
     },
     {
       "filename": "octopus-deploy-release-notes-mcp.agent.md",
