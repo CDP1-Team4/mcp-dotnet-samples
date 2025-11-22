@@ -50,11 +50,7 @@ public class MetadataService(HttpClient http, JsonSerializerOptions options, ILo
                 ContainsAnyKeyword(c.Name, searchTerms) == true ||
                 ContainsAnyKeyword(c.Description, searchTerms) == true ||
                 ContainsAnyKeyword(c.Usage, searchTerms) == true ||
-                (c.Tags is not null && c.Tags.Any(tag => searchTerms.Any(term => tag.Contains(term, StringComparison.InvariantCultureIgnoreCase)))))],
-
-            // Search in Agents
-            Agents = [.. metadata.Agents.Where(agent => ContainsAnyKeyword(agent.Title, searchTerms) == true ||
-                                                         ContainsAnyKeyword(agent.Description, searchTerms) == true)]
+                (c.Tags is not null && c.Tags.Any(tag => searchTerms.Any(term => tag.Contains(term, StringComparison.InvariantCultureIgnoreCase)))))]
         };
 
         return result;

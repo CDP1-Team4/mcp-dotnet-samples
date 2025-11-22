@@ -28,9 +28,4 @@ public class Metadata
     /// </summary>
     [JsonPropertyName("collections")]
     public List<Collection> Collections { get; set; } = [];
-
-    /// <summary>
-    /// Gets or sets the list of <see cref="Agent"/> objects.
-    /// </summary>
-    public List<Agent> Agents { get; set; } = [];
 }
