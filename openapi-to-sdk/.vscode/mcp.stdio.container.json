@@ -1,0 +1,15 @@
+{
+  "servers": {
+    "openapi-to-sdk": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-v", "${pwd}/wwwroot/generated:/app/wwwroot/generated",
+        "openapi-to-sdk:latest"
+      ]
+    }
+  }
+}
