@@ -1,19 +1,31 @@
 {
-  "inputs": [
-    {
-      "type": "promptString",
-      "id": "consoleapp-project-path",
-      "description": "The absolute path to the console app project Directory"
-    }
-  ],
   "servers": {
-    "openapi-to-sdk": {
+    "awesome-copilot": {
       "type": "stdio",
-      "command": "dotnet",
+      "command": "docker",
       "args": [
         "run",
-        "--project",
-        "${input:consoleapp-project-path}"
+        "-i",
+        "--rm",
+        "ghcr.io/microsoft/mcp-dotnet-samples/awesome-copilot:latest"
+      ]
+    },
+    "microsoft.docs.mcp": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "sequential-thinking": {
+      "type": "stdio",
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "mcp/sequentialthinking"
       ]
     }
   }

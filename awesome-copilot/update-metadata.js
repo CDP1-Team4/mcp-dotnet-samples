@@ -35,7 +35,6 @@ const directories = {
     ),
     prompts: path.join(__dirname, "src", "awesome-copilot", "prompts"),
     collections: path.join(__dirname, "src", "awesome-copilot", "collections"),
-    agents: path.join(__dirname, "src", "awesome-copilot", "agents"),
 };
 
 /**
@@ -670,7 +669,6 @@ const metadata = {
     ),
     prompts: processDirectory(directories.prompts, ".prompt.md"),
     collections: processCollectionDirectory(directories.collections),
-    agents: processDirectory(directories.agents, ".agent.md"),
 };
 
 // Write the metadata.json file
@@ -693,9 +691,6 @@ console.log(
 );
 console.log(
     `Extracted metadata from ${metadata.collections.length} collection files`
-);
-console.log(
-    `Extracted frontmatter from ${metadata.agents.length} agent files`
 );
 console.log(`Metadata written to ${outputPath}`);
 
@@ -769,18 +764,6 @@ metadata.collections.forEach((collection) => {
                 hasErrors = true;
             }
         });
-    }
-});
-
-// Check agents
-metadata.agents.forEach((agent) => {
-    if (!agent.filename || !agent.description) {
-        console.error(
-            `Error: Agent missing required fields: ${
-                agent.filename || "unknown"
-            }`
-        );
-        hasErrors = true;
     }
 });
 
