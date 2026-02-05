@@ -2,14 +2,14 @@
   "inputs": [
     {
       "type": "promptString",
-      "id": "apim-fqdn",
-      "description": "Azure API Management FQDN"
+      "id": "acaapp-server-fqdn",
+      "description": "Azure Container Apps FQDN"
     }
   ],
   "servers": {
     "onedrive-download": {
       "type": "http",
-      "url": "https://${input:apim-fqdn}/mcp"
+      "url": "https://${input:acaapp-server-fqdn}/mcp"
     }
   }
 }

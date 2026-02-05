@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "onedrive-download": {
+      "type": "http",
+      "url": "http://localhost:7071/mcp"
+    }
+  }
+}

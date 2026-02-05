@@ -9,9 +9,6 @@
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
-      },
       "type": "process",
       "problemMatcher": "$msCompile"
     },
@@ -23,9 +20,6 @@
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
-      },
       "type": "process",
       "dependsOn": "clean (functions)",
       "group": {
@@ -44,9 +38,6 @@
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
-      },
       "type": "process",
       "problemMatcher": "$msCompile"
     },
@@ -60,9 +51,6 @@
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
-      "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
-      },
       "type": "process",
       "dependsOn": "clean release (functions)",
       "problemMatcher": "$msCompile"
@@ -71,7 +59,7 @@
       "type": "func",
       "dependsOn": "build (functions)",
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp/bin/Debug/net9.0"
+        "cwd": "${workspaceFolder}/bin/Debug/net9.0"
       },
       "command": "host start",
       "isBackground": true,

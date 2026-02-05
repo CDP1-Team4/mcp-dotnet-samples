@@ -1,16 +1,24 @@
-﻿{
+{
   "inputs": [
     {
       "type": "promptString",
-      "id": "functionAppFqdn",
-      "description": "Azure Function App FQDN"
+      "id": "funcapp-server-fqdn",
+      "description": "Azure Functions FQDN"
+    },
+    {
+      "type": "promptString",
+      "id": "funcapp-key",
+      "description": "Azure Functions Key",
+      "password": true
     }
   ],
   "servers": {
     "onedrive-download": {
       "type": "http",
-      "url": "https://${input:functionAppFqdn}/mcp"
+      "url": "https://${input:funcapp-server-fqdn}/mcp",
+      "headers": {
+        "x-functions-key": "${input:funcapp-key}"
+      }
     }
   }
 }
-
