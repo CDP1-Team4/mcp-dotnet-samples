@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 using McpSamples.Shared.Configurations;
 
 namespace McpSamples.OnedriveDownload.HybridApp.Configurations;
@@ -10,7 +12,7 @@ public class OnedriveDownloadAppSettings : AppSettings
     /// <summary>
     /// Gets or sets the <see cref="EntraIdSettings"/> instance.
     /// </summary>
-    public EntraIdSettings EntraId { get; set; } = new EntraIdSettings(Environment.GetEnvironmentVariable("AZURE_CLIENT_ID"));
+    public EntraIdSettings EntraId { get; set; } = new EntraIdSettings(Environment.GetEnvironmentVariable(Constants.AzureClientIdEnvironmentKey));
 }
 
 /// <summary>

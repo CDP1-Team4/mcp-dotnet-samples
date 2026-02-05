@@ -11,6 +11,11 @@ public class Constants
     public const string DefaultScope = "https://graph.microsoft.com/.default";
 
     /// <summary>
+    /// The environment variable key for Azure Client ID.
+    /// </summary>
+    public const string AzureClientIdEnvironmentKey = "AZURE_CLIENT_ID";
+
+    /// <summary>
     /// The environment variable key for Azure Functions Custom Handler Port.
     /// </summary>
     public const string AzureFunctionsCustomHandlerPortEnvironmentKey = "FUNCTIONS_CUSTOMHANDLER_PORT";
@@ -18,7 +23,7 @@ public class Constants
     /// <summary>
     /// The default port for the custom handler.
     /// </summary>
-    public const int DefaultAppPort = 5260;
+    public const int DefaultAppPort = 5285;
 
     /// <summary>
     /// The default URL for the application.
