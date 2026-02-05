@@ -29,4 +29,9 @@ public class Constants
     /// The default URL for the application.
     /// </summary>
     public const string DefaultAppUrl = "http://0.0.0.0:{0}";
+
+    /// <summary>
+    /// The default folder to save downloaded files.
+    /// </summary>
+    public const string DefaultDownloadFolder = "downloads";
 }

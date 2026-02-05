@@ -7,15 +7,11 @@ namespace McpSamples.OnedriveDownload.HybridApp.Services;
 /// <summary>
 /// Azure File Share에서 파일을 로컬 컴퓨터로 자동 동기화하는 서비스
 /// </summary>
-public class AzureFileShareSyncService
+public class AzureFileShareSyncService(ILogger<AzureFileShareSyncService> logger)
 {
-    private readonly ILogger<AzureFileShareSyncService> _logger;
     private const string ShareName = "downloads";
 
-    public AzureFileShareSyncService(ILogger<AzureFileShareSyncService> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<AzureFileShareSyncService> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     /// <summary>
     /// Azure File Share에서 파일을 로컬 경로로 다운로드합니다.

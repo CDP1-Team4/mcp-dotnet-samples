@@ -2,6 +2,8 @@
   "IsEncrypted": false,
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    "AzureWebJobsStorage": "{{AZURE_STORAGE_ACCOUNT_CONNECTION_STRING}}",
     "AzureWebJobsFeatureFlags": "DisableDiagnosticEventLogging",
 
     "UseHttp": "true",
