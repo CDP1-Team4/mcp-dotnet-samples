@@ -6,9 +6,15 @@ metadata:
   template: azd-init@1.14.0
 
 services:
+  # onedrive-download:
+  #   project: src/McpSamples.OnedriveDownload.HybridApp
+  #   host: containerapp
+  #   language: dotnet
+  #   docker:
+  #     path: ../../../Dockerfile.onedrive-download-azure
+  #     context: ../../../
+  #     remoteBuild: true
   onedrive-download:
-    project: ./src/McpSamples.OnedriveDownload.HybridApp
+    project: src/McpSamples.OnedriveDownload.HybridApp
     host: function
     language: csharp
-    package:
-      outputPath: bin/Release/net9.0/publish

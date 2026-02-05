@@ -15,13 +15,5 @@
     },
     "enableForwardingHttpRequest": true,
     "enableHttpProxyingRequest": true
-  },
-  "logging": {
-    "applicationInsights": {
-      "samplingSettings": {
-        "isEnabled": true,
-        "excludedTypes": "Request"
-      }
-    }
   }
 }
