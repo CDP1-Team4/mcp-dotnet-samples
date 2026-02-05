@@ -2,12 +2,12 @@ using McpSamples.Shared.Configurations;
 
 using Microsoft.OpenApi.Models;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Configurations;
+namespace McpSamples.OneDriveDownload.HybridApp.Configurations;
 
 /// <summary>
 /// This represents the application settings for the onedrive-download app.
 /// </summary>
-public class OnedriveDownloadAppSettings : AppSettings
+public class OneDriveDownloadAppSettings : AppSettings
 {
     /// <inheritdoc />
     public override OpenApiInfo OpenApi { get; set; } = new()
@@ -39,17 +39,17 @@ public class OnedriveDownloadAppSettings : AppSettings
             {
                 case "--tenant-id":
                 case "-t":
-                    (settings as OnedriveDownloadAppSettings)!.EntraId.TenantId = args[++i];
+                    (settings as OneDriveDownloadAppSettings)!.EntraId.TenantId = args[++i];
                     break;
 
                 case "--client-id":
                 case "-c":
-                    (settings as OnedriveDownloadAppSettings)!.EntraId.ClientId = args[++i];
+                    (settings as OneDriveDownloadAppSettings)!.EntraId.ClientId = args[++i];
                     break;
 
                 case "--client-secret":
                 case "-s":
-                    (settings as OnedriveDownloadAppSettings)!.EntraId.ClientSecret = args[++i];
+                    (settings as OneDriveDownloadAppSettings)!.EntraId.ClientSecret = args[++i];
                     break;
 
                 default:

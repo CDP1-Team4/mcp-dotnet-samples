@@ -1,4 +1,4 @@
-namespace McpSamples.OnedriveDownload.HybridApp;
+namespace McpSamples.OneDriveDownload.HybridApp;
 
 /// <summary>
 /// This represents the entity containing all the magic numbers and strings.

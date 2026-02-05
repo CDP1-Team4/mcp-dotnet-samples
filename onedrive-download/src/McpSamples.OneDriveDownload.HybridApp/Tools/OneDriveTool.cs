@@ -2,10 +2,10 @@ using System.ComponentModel;
 
 using ModelContextProtocol.Server;
 
-using McpSamples.OnedriveDownload.HybridApp.Models;
-using McpSamples.OnedriveDownload.HybridApp.Services;
+using McpSamples.OneDriveDownload.HybridApp.Models;
+using McpSamples.OneDriveDownload.HybridApp.Services;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Tools;
+namespace McpSamples.OneDriveDownload.HybridApp.Tools;
 
 /// <summary>
 /// This provides interfaces to <see cref="OneDriveTool"/>.

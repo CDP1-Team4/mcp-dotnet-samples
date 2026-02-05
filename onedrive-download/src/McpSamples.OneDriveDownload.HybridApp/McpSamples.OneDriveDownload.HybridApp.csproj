@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <AssemblyName>McpSamples.OneDriveDownload.HybridApp</AssemblyName>
+    <RootNamespace>McpSamples.OneDriveDownload.HybridApp</RootNamespace>
+
+    <UserSecretsId>53a97ea1-8708-44a3-b810-38b77f5d6001</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Identity" Version="1.*" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.*" />
+    <PackageReference Include="Azure.Storage.Files.Shares" Version="12.*" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.*" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="4.*" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="4.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\shared\McpSamples.Shared\McpSamples.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include=".azurefunctions\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

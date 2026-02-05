@@ -3,14 +3,14 @@ using System.Text;
 using Azure.Storage.Files.Shares;
 using Azure.Storage.Sas;
 
-using McpSamples.OnedriveDownload.HybridApp.Configurations;
-using McpSamples.OnedriveDownload.HybridApp.Models;
+using McpSamples.OneDriveDownload.HybridApp.Configurations;
+using McpSamples.OneDriveDownload.HybridApp.Models;
 
 using Microsoft.Graph;
 
 using File = System.IO.File;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Services;
+namespace McpSamples.OneDriveDownload.HybridApp.Services;
 
 /// <summary>
 /// This provides interfaces to <see cref="OneDriveDownloadService"/>.
@@ -28,14 +28,14 @@ public interface IOneDriveDownloadService
 /// <summary>
 /// This represents the service to download files from OneDrive and save to Azure Storage.
 /// </summary>
-/// <param name="settings">The <see cref="OnedriveDownloadAppSettings"/> instance.</param>
+/// <param name="settings">The <see cref="OneDriveDownloadAppSettings"/> instance.</param>
 /// <param name="graph">The <see cref="GraphServiceClient"/> instance.</param>
 /// <param name="share">The <see cref="ShareClient"/> instance.</param>
 /// <param name="accessor">The <see cref="IHttpContextAccessor"/> instance.</param>
 /// <param name="logger">The <see cref="ILogger{T}"/> instance.</param>
-public class OneDriveDownloadService(OnedriveDownloadAppSettings settings, GraphServiceClient graph, ShareClient share, IHttpContextAccessor accessor, ILogger<OneDriveDownloadService> logger) : IOneDriveDownloadService
+public class OneDriveDownloadService(OneDriveDownloadAppSettings settings, GraphServiceClient graph, ShareClient share, IHttpContextAccessor accessor, ILogger<OneDriveDownloadService> logger) : IOneDriveDownloadService
 {
-    private readonly OnedriveDownloadAppSettings _settings = settings ?? throw new ArgumentNullException(nameof(settings));
+    private readonly OneDriveDownloadAppSettings _settings = settings ?? throw new ArgumentNullException(nameof(settings));
     private readonly GraphServiceClient _graph = graph ?? throw new ArgumentNullException(nameof(graph));
     private readonly ShareClient _share = share ?? throw new ArgumentNullException(nameof(share));
     private readonly IHttpContextAccessor _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));

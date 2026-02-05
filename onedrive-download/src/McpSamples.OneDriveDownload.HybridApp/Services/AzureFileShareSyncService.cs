@@ -2,7 +2,7 @@ using Azure.Storage.Files.Shares;
 using Azure.Storage.Files.Shares.Models;
 using Microsoft.Extensions.Logging;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Services;
+namespace McpSamples.OneDriveDownload.HybridApp.Services;
 
 /// <summary>
 /// Azure File Share에서 파일을 로컬 컴퓨터로 자동 동기화하는 서비스
@@ -101,7 +101,7 @@ public class AzureFileShareSyncService(ILogger<AzureFileShareSyncService> logger
             if (csprojFiles.Length > 0)
             {
                 // .csproj가 있는 폴더가 프로젝트 루트의 바로 위가 아니라
-                // 더 위에 있을 수 있으니 (예: src/McpSamples.OnedriveDownload.HybridApp/)
+                // 더 위에 있을 수 있으니 (예: src/McpSamples.OneDriveDownload.HybridApp/)
                 // 계속 올라가서 azure.yaml이나 .git가 있는 폴더를 찾자
                 return FindSolutionRoot(current);
             }

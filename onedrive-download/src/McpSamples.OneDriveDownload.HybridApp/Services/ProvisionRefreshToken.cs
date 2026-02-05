@@ -32,7 +32,7 @@ public class ProvisionRefreshToken
         {
             // Step 0: ClientId 설정에서 읽기
             var clientId = configuration?["EntraId:ClientId"]
-                        ?? configuration?["OnedriveDownload:EntraId:ClientId"]
+                        ?? configuration?["OneDriveDownload:EntraId:ClientId"]
                         ?? DefaultClientId;
             Console.WriteLine($"Using ClientId: {clientId}\n");
 

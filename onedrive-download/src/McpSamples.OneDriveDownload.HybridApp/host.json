@@ -10,7 +10,7 @@
       "defaultExecutablePath": "dotnet",
       "workingDirectory": "",
       "arguments": [
-        "McpSamples.OnedriveDownload.HybridApp.dll"
+        "McpSamples.OneDriveDownload.HybridApp.dll"
       ]
     },
     "enableForwardingHttpRequest": true,

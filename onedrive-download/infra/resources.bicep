@@ -178,11 +178,11 @@ resource functionApp 'Microsoft.Web/sites@2023-12-01' = {
         }
         // ★ RFC 9728 OAuth Protected Resource Metadata를 위한 인증 설정
         {
-          name: 'OnedriveDownload__Auth__TenantId'
+          name: 'OneDriveDownload__Auth__TenantId'
           value: tenant().tenantId
         }
         {
-          name: 'OnedriveDownload__Auth__ClientId'
+          name: 'OneDriveDownload__Auth__ClientId'
           value: entraApp.outputs.mcpAppId
         }
         {

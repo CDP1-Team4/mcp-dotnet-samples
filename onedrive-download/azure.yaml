@@ -7,7 +7,7 @@ metadata:
 
 services:
   # onedrive-download:
-  #   project: src/McpSamples.OnedriveDownload.HybridApp
+  #   project: src/McpSamples.OneDriveDownload.HybridApp
   #   host: containerapp
   #   language: dotnet
   #   docker:
@@ -15,6 +15,6 @@ services:
   #     context: ../../../
   #     remoteBuild: true
   onedrive-download:
-    project: src/McpSamples.OnedriveDownload.HybridApp
+    project: src/McpSamples.OneDriveDownload.HybridApp
     host: function
     language: csharp

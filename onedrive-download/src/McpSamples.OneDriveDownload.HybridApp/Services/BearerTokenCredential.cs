@@ -1,6 +1,6 @@
 using Azure.Core;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Services;
+namespace McpSamples.OneDriveDownload.HybridApp.Services;
 
 /// <summary>
 /// Token Passthrough: HTTP 요청 헤더에서 토큰을 꺼내 사용하는 Credential

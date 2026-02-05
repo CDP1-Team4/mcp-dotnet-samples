@@ -4,7 +4,7 @@ using Microsoft.Graph;
 using System.Net.Http.Headers;
 using Microsoft.Extensions.Logging;
 
-namespace McpSamples.OnedriveDownload.HybridApp.Services;
+namespace McpSamples.OneDriveDownload.HybridApp.Services;
 
 public interface IUserAuthenticationService
 {

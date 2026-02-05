@@ -1,4 +1,4 @@
-namespace McpSamples.OnedriveDownload.HybridApp.Models;
+namespace McpSamples.OneDriveDownload.HybridApp.Models;
 
 /// <summary>
 /// This represents the download result entity from OneDrive to Azure Storage.

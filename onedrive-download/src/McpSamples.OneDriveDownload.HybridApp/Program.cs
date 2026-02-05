@@ -2,14 +2,14 @@ using Azure.Core;
 using Azure.Identity;
 using Azure.Storage.Files.Shares;
 
-using McpSamples.OnedriveDownload.HybridApp.Configurations;
-using McpSamples.OnedriveDownload.HybridApp.Services;
+using McpSamples.OneDriveDownload.HybridApp.Configurations;
+using McpSamples.OneDriveDownload.HybridApp.Services;
 using McpSamples.Shared.Configurations;
 using McpSamples.Shared.Extensions;
 
 using Microsoft.Graph;
 
-using Constants = McpSamples.OnedriveDownload.HybridApp.Constants;
+using Constants = McpSamples.OneDriveDownload.HybridApp.Constants;
 using WebApplication = Microsoft.AspNetCore.Builder.WebApplication;
 
 var envs = Environment.GetEnvironmentVariables();
@@ -34,7 +34,7 @@ if (useStreamableHttp == true)
 }
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddAppSettings<OnedriveDownloadAppSettings>(builder.Configuration, args);
+builder.Services.AddAppSettings<OneDriveDownloadAppSettings>(builder.Configuration, args);
 
 // ★ HttpClient 등록 (토큰 교환 프록시용)
 // builder.Services.AddHttpClient();
@@ -76,7 +76,7 @@ builder.Services.AddScoped<GraphServiceClient>(sp =>
 
     // return client;
 
-    var settings = sp.GetRequiredService<OnedriveDownloadAppSettings>();
+    var settings = sp.GetRequiredService<OneDriveDownloadAppSettings>();
     var entraId = settings.EntraId;
 
     TokenCredential credential = entraId.UseManagedIdentity
@@ -91,7 +91,7 @@ builder.Services.AddScoped<GraphServiceClient>(sp =>
 
 builder.Services.AddScoped<ShareClient>(sp =>
 {
-    var settings = sp.GetRequiredService<OnedriveDownloadAppSettings>();
+    var settings = sp.GetRequiredService<OneDriveDownloadAppSettings>();
     var connectionString = settings.AzureStorage.ConnectionString;
     var shareName = settings.AzureStorage.FileShareName;
 
@@ -144,12 +144,12 @@ builder.Services.AddScoped<ShareClient>(sp =>
 //     builder.Services.AddOpenApi("swagger", o =>
 //     {
 //         o.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi2_0;
-//         o.AddDocumentTransformer<McpDocumentTransformer<OnedriveDownloadAppSettings>>();
+//         o.AddDocumentTransformer<McpDocumentTransformer<OneDriveDownloadAppSettings>>();
 //     });
 //     builder.Services.AddOpenApi("openapi", o =>
 //     {
 //         o.OpenApiVersion = Microsoft.OpenApi.OpenApiSpecVersion.OpenApi3_0;
-//         o.AddDocumentTransformer<McpDocumentTransformer<OnedriveDownloadAppSettings>>();
+//         o.AddDocumentTransformer<McpDocumentTransformer<OneDriveDownloadAppSettings>>();
 //     });
 // }
 

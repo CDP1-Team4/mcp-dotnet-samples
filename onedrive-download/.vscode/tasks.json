@@ -10,7 +10,7 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
+        "cwd": "${workspaceFolder}/src/McpSamples.OneDriveDownload.HybridApp"
       },
       "type": "process",
       "problemMatcher": "$msCompile"
@@ -24,7 +24,7 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
+        "cwd": "${workspaceFolder}/src/McpSamples.OneDriveDownload.HybridApp"
       },
       "type": "process",
       "dependsOn": "clean (functions)",
@@ -45,7 +45,7 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
+        "cwd": "${workspaceFolder}/src/McpSamples.OneDriveDownload.HybridApp"
       },
       "type": "process",
       "problemMatcher": "$msCompile"
@@ -61,7 +61,7 @@
         "/consoleloggerparameters:NoSummary"
       ],
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp"
+        "cwd": "${workspaceFolder}/src/McpSamples.OneDriveDownload.HybridApp"
       },
       "type": "process",
       "dependsOn": "clean release (functions)",
@@ -71,7 +71,7 @@
       "type": "func",
       "dependsOn": "build (functions)",
       "options": {
-        "cwd": "${workspaceFolder}/src/McpSamples.OnedriveDownload.HybridApp/bin/Debug/net9.0"
+        "cwd": "${workspaceFolder}/src/McpSamples.OneDriveDownload.HybridApp/bin/Debug/net9.0"
       },
       "command": "host start",
       "isBackground": true,
