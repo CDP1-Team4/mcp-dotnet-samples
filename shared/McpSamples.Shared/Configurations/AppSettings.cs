@@ -37,17 +37,6 @@ public abstract class AppSettings
         var settings = new T();
         config.Bind(settings);
 
-        if (args.Length == 0)
-        {
-            return settings;
-        }
-
-        if (args.Length == 1)
-        {
-            settings.Help = true;
-            return settings;
-        }
-
         return settings;
     }
 
@@ -67,12 +56,6 @@ public abstract class AppSettings
 
         if (args.Length == 0)
         {
-            return settings;
-        }
-
-        if (args.Length == 1)
-        {
-            settings.Help = true;
             return settings;
         }
 

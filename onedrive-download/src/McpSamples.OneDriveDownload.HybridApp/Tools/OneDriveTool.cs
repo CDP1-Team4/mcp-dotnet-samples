@@ -33,7 +33,7 @@ public class OneDriveTool(IOneDriveDownloadService service, ILogger<OneDriveTool
 
     /// <inheritdoc />
     [McpServerTool(Name = "download_file", Title = "Download File from OneDrive URL")]
-    [Description("Downloads a file from OneDrive, saves to Azure Storage and returns a public download link.")]
+    [Description("Downloads a file from OneDrive")]
     public async Task<DownloadResult> DownloadFileFromUrlAsync(
         [Description("The OneDrive sharing URL")] string sharingUrl
     )

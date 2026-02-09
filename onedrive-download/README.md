@@ -17,9 +17,9 @@ This is an MCP server that downloads files from OneDrive and provides secure acc
   - Secure file download with time-bound SAS tokens
   - Azure File Share integration for file storage
 
-  | Building Block | Name                          | Description                                              | Usage                               |
-  |----------------|-------------------------------|----------------------------------------------------------|------------------------------------|
-  | Tools          | `download_file_from_onedrive_url` | Download a file from OneDrive URL and return SAS link. | `#download_file_from_onedrive_url` |
+  | Building Block | Name            | Description                         | Usage            |
+  |----------------|-----------------|-------------------------------------|------------------|
+  | Tools          | `download_file` | Download a file from OneDrive link. | `#download_file` |
 
 ## Getting Started
 

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72D-47B6-A68D-7590B98EB39B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpSamples.Shared", "..\shared\McpSamples.Shared\McpSamples.Shared.csproj", "{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpSamples.OneDriveDownload.HybridApp", "src\McpSamples.OneDriveDownload.HybridApp\McpSamples.OneDriveDownload.HybridApp.csproj", "{71D5E732-06DF-430C-80AF-F0996DCE338B}"
 EndProject
 Global
@@ -17,6 +19,18 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|x64.Build.0 = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Debug|x86.Build.0 = Debug|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|x64.ActiveCfg = Release|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|x64.Build.0 = Release|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|x86.ActiveCfg = Release|Any CPU
+		{ECEEA7E7-04EC-41F4-A0B0-0EB91EC93A27}.Release|x86.Build.0 = Release|Any CPU
 		{71D5E732-06DF-430C-80AF-F0996DCE338B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71D5E732-06DF-430C-80AF-F0996DCE338B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71D5E732-06DF-430C-80AF-F0996DCE338B}.Debug|x64.ActiveCfg = Debug|Any CPU

@@ -2,19 +2,8 @@
   "inputs": [
     {
       "type": "promptString",
-      "id": "tenant-id",
-      "description": "The tenant ID for Entra ID"
-    },
-    {
-      "type": "promptString",
       "id": "client-id",
       "description": "The client ID for Entra ID"
-    },
-    {
-      "type": "promptString",
-      "id": "client-secret",
-      "description": "The client secret for Entra ID",
-      "password": true
     }
   ],
   "servers": {
@@ -26,12 +15,8 @@
         "-i",
         "--rm",
         "ghcr.io/microsoft/mcp-dotnet-samples/onedrive-download:latest",
-        "--tenant-id",
-        "${input:tenant-id}",
         "--client-id",
-        "${input:client-id}",
-        "--client-secret",
-        "${input:client-secret}"
+        "${input:client-id}"
       ]
     }
   }

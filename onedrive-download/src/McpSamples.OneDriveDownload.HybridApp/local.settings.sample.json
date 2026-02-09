@@ -3,14 +3,15 @@
   "Values": {
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
 
-    "AzureWebJobsStorage": "{{AZURE_STORAGE_ACCOUNT_CONNECTION_STRING}}",
     "AzureWebJobsFeatureFlags": "DisableDiagnosticEventLogging",
 
     "UseHttp": "true",
+    "UseAzureStorage": "false",
 
-    "EntraId__TenantId": "{{TENANT_ID}}",
+    "AzureStorage__ConnectionString": "{{AZURE_STORAGE_CONNECTION_STRING}}",
+
+    "EntraId__TenantId": "common",
     "EntraId__ClientId": "{{CLIENT_ID}}",
-    "EntraId__ClientSecret": "{{CLIENT_SECRET}}",
-    "EntraId__UseManagedIdentity": false
+    "EntraId__UseManagedIdentity": "false"
   }
 }

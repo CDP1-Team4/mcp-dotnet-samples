@@ -4,22 +4,22 @@
     "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "http://localhost:5285",
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5870",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "UseStreamableHttp": "true"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "commandLineArgs": "--http --use-azure-storage"
     },
     "https": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:7273;http://localhost:5285",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:45870;http://localhost:5870",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "UseStreamableHttp": "true"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "commandLineArgs": "--https --use-azure-storage"
     }
   }
 }

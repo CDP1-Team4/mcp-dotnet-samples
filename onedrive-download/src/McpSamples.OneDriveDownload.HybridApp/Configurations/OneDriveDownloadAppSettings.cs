@@ -18,6 +18,11 @@ public class OneDriveDownloadAppSettings : AppSettings
     };
 
     /// <summary>
+    /// Gets or sets the value indicating whether to use Azure Storage to save downloaded files.
+    /// </summary>
+    public bool UseAzureStorage { get; set; } = false;
+
+    /// <summary>
     /// Gets or sets the <see cref="AzureStorageSettings"/> instance.
     /// </summary>
     public AzureStorageSettings AzureStorage { get; set; } = new AzureStorageSettings();
@@ -37,6 +42,11 @@ public class OneDriveDownloadAppSettings : AppSettings
             var arg = args[i];
             switch (arg)
             {
+                case "--use-azure-storage":
+                case "-a":
+                    (settings as OneDriveDownloadAppSettings)!.UseAzureStorage = true;
+                    break;
+
                 case "--tenant-id":
                 case "-t":
                     (settings as OneDriveDownloadAppSettings)!.EntraId.TenantId = args[++i];
@@ -53,7 +63,6 @@ public class OneDriveDownloadAppSettings : AppSettings
                     break;
 
                 default:
-                    settings.Help = true;
                     break;
             }
         }
@@ -70,10 +79,10 @@ public class AzureStorageSettings
     /// <summary>
     /// Gets or sets the Azure Storage connection string.
     /// </summary>
-    public string? ConnectionString { get; } = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+    public string? ConnectionString { get; set; }
 
     /// <summary>
-    /// Gets or sets the Azure File Share name.
+    /// Gets the Azure File Share name.
     /// </summary>
     public string? FileShareName { get; } = Constants.DefaultDownloadFolder;
 }
@@ -108,9 +117,4 @@ public class EntraIdSettings(string? userAssignedClientId = default)
     /// Gets the user-assigned client ID.
     /// </summary>
     public string? UserAssignedClientId { get; } = userAssignedClientId;
-
-    /// <summary>
-    /// Gets or sets the Personal 365 refresh token for OneDrive access.
-    /// </summary>
-    public string? Personal365RefreshToken { get; set; }
 }

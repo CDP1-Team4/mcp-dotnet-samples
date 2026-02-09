@@ -60,21 +60,52 @@ try {
     az login | Out-Null
 }
 
-$tenantId = az account show --query tenantId -o tsv
+$tenantId = "common"
 Write-Info "Using tenant: $tenantId"
 
 $graphAppId = '00000003-0000-0000-c000-000000000000'
-$redirectUri = 'http://localhost'
-$secretName  = 'default'
+$redirectUris = "['http://localhost','http://127.0.0.1','https://vscode.dev/redirect']"
 $maxAttempts = 5
 
-# Resolve Files.SelectedOperations.Selected role id
-$filesSelectedOperationsSelectedRoleId = az ad sp show --id $graphAppId --query "appRoles[?value=='Files.SelectedOperations.Selected' && contains(allowedMemberTypes, 'Application')].id" -o tsv
-if (-not $filesSelectedOperationsSelectedRoleId) {
-    Write-Err 'Could not resolve Files.SelectedOperations.Selected application permission ID from Microsoft Graph SP.'
+# Resolve email role id
+$emailRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='email' && type=='User'].id" -o tsv
+if (-not $emailRoleId) {
+    Write-Err 'Could not resolve email delegate permission ID from Microsoft Graph SP.'
     exit 1
 }
-Write-Info "Resolved Files.SelectedOperations.Selected app role ID: $filesSelectedOperationsSelectedRoleId"
+Write-Info "Resolved email delegate permission ID: $emailRoleId"
+
+# Resolve offline_access role id
+$offlineAccessRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='offline_access' && type=='User'].id" -o tsv
+if (-not $offlineAccessRoleId) {
+    Write-Err 'Could not resolve offline_access delegate permission ID from Microsoft Graph SP.'
+    exit 1
+}
+Write-Info "Resolved offline_access delegate permission ID: $offlineAccessRoleId"
+
+# Resolve openid role id
+$openidRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='openid' && type=='User'].id" -o tsv
+if (-not $openidRoleId) {
+    Write-Err 'Could not resolve openid delegate permission ID from Microsoft Graph SP.'
+    exit 1
+}
+Write-Info "Resolved openid delegate permission ID: $openidRoleId"
+
+# Resolve profile role id
+$profileRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='profile' && type=='User'].id" -o tsv
+if (-not $profileRoleId) {
+    Write-Err 'Could not resolve profile delegate permission ID from Microsoft Graph SP.'
+    exit 1
+}
+Write-Info "Resolved profile delegate permission ID: $profileRoleId"
+
+# Resolve Files.Read.All role id
+$filesReadAllRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='Files.Read.All' && type=='User'].id" -o tsv
+if (-not $filesReadAllRoleId) {
+    Write-Err 'Could not resolve Files.Read.All delegate permission ID from Microsoft Graph SP.'
+    exit 1
+}
+Write-Info "Resolved Files.Read.All delegate permission ID: $filesReadAllRoleId"
 
 # Generate unique app name
 $attempt = 1
@@ -92,7 +123,9 @@ Write-Info "App display name will be: $appName"
 
 # Create app registration
 Write-Info 'Creating app registration...'
-$appCreateJson = az ad app create --display-name $appName --sign-in-audience AzureADMyOrg -o json
+$appCreateJson = az ad app create --display-name $appName `
+    --sign-in-audience AzureADandPersonalMicrosoftAccount `
+    --is-fallback-public-client true -o json
 $appCreate = $appCreateJson | ConvertFrom-Json
 $appId = $appCreate.appId
 $appObjectId = $appCreate.id
@@ -103,13 +136,18 @@ if (-not $appId -or -not $appObjectId) {
 Write-Info "Created app. Application (client) ID: $appId"
 Write-Info "App object ID: $appObjectId"
 
-# Apply SPA redirect URI
-Write-Info 'Applying SPA redirect URI via update...'
-az ad app update --id "$appId" --set "spa={'redirectUris': ['$redirectUri']}" | Out-Null
+# Apply Public Client redirect URI
+Write-Info 'Applying public client redirect URI via update...'
+az ad app update --id "$appId" --set "publicClient={'redirectUris':$redirectUris}" | Out-Null
 
 # Prepare requiredResourceAccess
-Write-Info 'Updating app with required resource access (Files.SelectedOperations.Selected)...'
-az ad app update --id $appId --required-resource-accesses "[{'resourceAppId':'$graphAppId','resourceAccess':[{'id':'$filesSelectedOperationsSelectedRoleId','type':'Role'}]}]"
+Write-Info 'Updating app with required resource access (Files.Read.All, email, offline_access, openid, profile)...'
+$resourceAccess = "[{'id':'$filesReadAllRoleId','type':'Scope'}," +
+                   "{'id':'$emailRoleId','type':'Scope'}," +
+                   "{'id':'$offlineAccessRoleId','type':'Scope'}," +
+                   "{'id':'$openidRoleId','type':'Scope'}," +
+                   "{'id':'$profileRoleId','type':'Scope'}]"
+az ad app update --id $appId --required-resource-accesses "[{'resourceAppId':'$graphAppId','resourceAccess':$resourceAccess}]" | Out-Null
 
 # Create service principal (may already exist)
 Write-Info 'Ensuring service principal exists...'
@@ -117,34 +155,18 @@ az ad sp create --id $appId | Out-Null
 $spObjectId = az ad sp show --id $appId --query id -o tsv
 Write-Info "Service principal object ID: $spObjectId"
 
-# Grant admin consent
-Write-Info "Granting admin consent..."
-Start-Sleep -Seconds 30
-az ad app permission admin-consent --id "$appId"
-
-# Create client secret
-Write-Info "Creating client secret named '$secretName'..."
-$secretJson = az ad app credential reset --id $appId --append --display-name $secretName --years 1 -o json
-$secretObj = $secretJson | ConvertFrom-Json
-$clientSecretValue = $secretObj.password
-if (-not $clientSecretValue) {
-    Write-Err "Failed to obtain client secret value. Raw: $secretJson"
-    exit 1
-}
-
 # Build output
 $result = [ordered]@{
     displayName         = $appName
     tenantId            = $tenantId
     clientId            = $appId
-    clientSecret        = $clientSecretValue
 }
 $json = $result | ConvertTo-Json -Depth 3
 
 if ($OutFile) {
     Set-Content -Path $OutFile -Value $json -Encoding UTF8
-    Write-Info "JSON output written to $OutFile (contains clientSecret). Secure this file (consider: chmod 600 $OutFile)."
+    Write-Info "JSON output written to $OutFile. Secure this file (consider: chmod 600 $OutFile)."
 } else {
     $json
-    Write-Info 'JSON output emitted above. Store clientSecret securely; it cannot be retrieved later.'
+    Write-Info 'JSON output emitted above.'
 }
