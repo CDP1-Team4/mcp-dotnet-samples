@@ -3,11 +3,13 @@
 Registers an Entra ID (Azure AD) application for the OneDrive Download MCP sample.
 
 .DESCRIPTION
-Creates a single-tenant SPA application with redirect URI http://localhost, requests
-Microsoft Graph Mail.Send application permission, creates a service principal, grants
-admin consent, and generates a client secret named 'default'. Outputs a JSON payload
-containing identifiers and the secret value (only shown once). Optionally writes JSON
-to a file via -OutFile.
+Registers an Entra ID (Azure AD) application for the OneDrive Download MCP sample.
+
+Features:
+- Display name: mcp-onedrivedownload-<random 4 digits>
+- Adds Microsoft Graph delegate permissions: Files.Read.All, email, offline_access, openid, profile
+
+Requirements: Azure CLI (az)
 
 .PARAMETER OutFile
 Path to write JSON output instead of stdout.
@@ -67,7 +69,7 @@ $graphAppId = '00000003-0000-0000-c000-000000000000'
 $redirectUris = "['http://localhost','http://127.0.0.1','https://vscode.dev/redirect']"
 $maxAttempts = 5
 
-# Resolve email role id
+# Resolve email role id (delegated permission)
 $emailRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='email' && type=='User'].id" -o tsv
 if (-not $emailRoleId) {
     Write-Err 'Could not resolve email delegate permission ID from Microsoft Graph SP.'
@@ -75,7 +77,7 @@ if (-not $emailRoleId) {
 }
 Write-Info "Resolved email delegate permission ID: $emailRoleId"
 
-# Resolve offline_access role id
+# Resolve offline_access role id (delegated permission)
 $offlineAccessRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='offline_access' && type=='User'].id" -o tsv
 if (-not $offlineAccessRoleId) {
     Write-Err 'Could not resolve offline_access delegate permission ID from Microsoft Graph SP.'
@@ -83,7 +85,7 @@ if (-not $offlineAccessRoleId) {
 }
 Write-Info "Resolved offline_access delegate permission ID: $offlineAccessRoleId"
 
-# Resolve openid role id
+# Resolve openid role id (delegated permission)
 $openidRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='openid' && type=='User'].id" -o tsv
 if (-not $openidRoleId) {
     Write-Err 'Could not resolve openid delegate permission ID from Microsoft Graph SP.'
@@ -91,7 +93,7 @@ if (-not $openidRoleId) {
 }
 Write-Info "Resolved openid delegate permission ID: $openidRoleId"
 
-# Resolve profile role id
+# Resolve profile role id (delegated permission)
 $profileRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='profile' && type=='User'].id" -o tsv
 if (-not $profileRoleId) {
     Write-Err 'Could not resolve profile delegate permission ID from Microsoft Graph SP.'
@@ -99,7 +101,7 @@ if (-not $profileRoleId) {
 }
 Write-Info "Resolved profile delegate permission ID: $profileRoleId"
 
-# Resolve Files.Read.All role id
+# Resolve Files.Read.All role id (delegated permission)
 $filesReadAllRoleId = az ad sp show --id $graphAppId --query "oauth2PermissionScopes[?value=='Files.Read.All' && type=='User'].id" -o tsv
 if (-not $filesReadAllRoleId) {
     Write-Err 'Could not resolve Files.Read.All delegate permission ID from Microsoft Graph SP.'
@@ -123,9 +125,11 @@ Write-Info "App display name will be: $appName"
 
 # Create app registration
 Write-Info 'Creating app registration...'
-$appCreateJson = az ad app create --display-name $appName `
+$appCreateJson = az ad app create `
+    --display-name $appName `
     --sign-in-audience AzureADandPersonalMicrosoftAccount `
-    --is-fallback-public-client true -o json
+    --is-fallback-public-client true `
+    -o json
 $appCreate = $appCreateJson | ConvertFrom-Json
 $appId = $appCreate.appId
 $appObjectId = $appCreate.id

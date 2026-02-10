@@ -63,8 +63,6 @@ resource APIMGatewayURLNamedValue 'Microsoft.ApiManagement/service/namedValues@2
   }
 }
 
-
-
 // Create the MCP API definition in APIM
 resource mcpApi 'Microsoft.ApiManagement/service/apis@2023-05-01-preview' = {
   parent: apimService
@@ -122,7 +120,7 @@ resource mcpStreamablePostOperation 'Microsoft.ApiManagement/service/apis/operat
   }
 }
 
-// Create the Download proxy endpoint (bypass token validation)
+// Create the download URL endpoint
 resource downloadOperation 'Microsoft.ApiManagement/service/apis/operations@2023-05-01-preview' = {
   parent: mcpApi
   name: 'download-get'
@@ -130,7 +128,7 @@ resource downloadOperation 'Microsoft.ApiManagement/service/apis/operations@2023
     displayName: 'Download File'
     method: 'GET'
     urlTemplate: '/download'
-    description: 'Proxy endpoint for Azure File Share download with SAS token generation'
+    description: 'Endpoint that downloads files from OneDrive'
   }
 }
 

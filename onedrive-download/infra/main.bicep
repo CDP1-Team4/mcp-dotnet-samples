@@ -6,13 +6,29 @@ targetScope = 'subscription'
 param environmentName string
 
 @minLength(1)
-@description('Primary location for all resources')
+@description('Primary location for all resources & Flex Consumption Function App')
+@allowed([
+  'australiaeast'
+  'brazilsouth'
+  'eastus'
+  'southeastasia'
+  'westeurope'
+  'southafricanorth'
+  'uaenorth'
+])
 @metadata({
   azd: {
     type: 'location'
   }
 })
 param location string
+
+param mcpOneDriveDownloadExists bool
+
+param vnetEnabled bool = true // Enable VNet by default
+
+@description('Id of the user or app to assign application roles')
+param principalId string
 
 // Tags that should be applied to all resources.
 // 
@@ -36,12 +52,16 @@ module resources 'resources.bicep' = {
   params: {
     location: location
     tags: tags
+    principalId: principalId
+    mcpOneDriveDownloadExists: mcpOneDriveDownloadExists
     azdServiceName: 'onedrive-download'
+    vnetEnabled: vnetEnabled
   }
 }
 
 output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_ID string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_ID
 output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_NAME string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_NAME
 output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_FQDN string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_FQDN
+output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_ID string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_ID
+output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_NAME string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_NAME
 output AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_FQDN string = resources.outputs.AZURE_RESOURCE_MCP_ONEDRIVE_DOWNLOAD_GATEWAY_FQDN
-output AZURE_CLIENT_ID string = resources.outputs.mcpAppId

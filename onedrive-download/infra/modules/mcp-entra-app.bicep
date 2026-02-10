@@ -53,8 +53,9 @@ var permissionId = guid(mcpAppUniqueName, 'user_impersonation')
 resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
   displayName: mcpAppDisplayName
   uniqueName: mcpAppUniqueName
-  // ★ 모든 Microsoft 사용자가 로그인할 수 있도록 설정
+
   signInAudience: 'AzureADandPersonalMicrosoftAccount'
+
   api: {
     oauth2PermissionScopes: [
       {
@@ -78,6 +79,7 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
       }
     ]
   }
+
   // Parameterized Microsoft Graph delegated scopes based on appScopes
   requiredResourceAccess: [
     {
@@ -86,7 +88,12 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
     }
   ]
 
-  // ★ 모바일/데스크톱 앱용 Public Client (VSCode용)
+//   spa: {
+//     redirectUris: [
+//       'https://${functionAppName}.azurewebsites.net/auth/callback'
+//     ]
+//   }
+
   publicClient: {
     redirectUris: [
       'http://localhost'
@@ -95,7 +102,6 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
     ]
   }
 
-  // ★★★ 공용 클라이언트 흐름 허용 (OAuth2 Authorization Code Flow for Public Clients)
   isFallbackPublicClient: true
 
   resource fic 'federatedIdentityCredentials@v1.0' = {
@@ -112,6 +118,21 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
 resource applicationRegistrationServicePrincipal 'Microsoft.Graph/servicePrincipals@v1.0' = {
   appId: mcpEntraApp.appId
 }
+
+// resource applicationDelegatePermissionForApp 'Microsoft.Graph/oauth2PermissionGrants@v1.0' = {
+//   resourceId: msGraphSP.id
+//   clientId: applicationRegistrationServicePrincipal.id
+//   consentType: 'AllPrincipals'
+//   scope: 'Files.Read.All'
+// }
+
+// resource applicationDelegatePermissionForUserAssignedIdentity 'Microsoft.Graph/oauth2PermissionGrants@v1.0' = {
+//   resourceId: msGraphSP.id
+//   clientId: applicationRegistrationServicePrincipal.id
+//   consentType: 'Principal'
+//   principalId: userAssignedIdentityPrincipleId
+//   scope: 'Files.Read.All'
+// }
 
 // Outputs
 output mcpAppId string = mcpEntraApp.appId

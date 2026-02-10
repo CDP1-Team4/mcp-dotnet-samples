@@ -47,19 +47,9 @@ public class OneDriveDownloadAppSettings : AppSettings
                     (settings as OneDriveDownloadAppSettings)!.UseAzureStorage = true;
                     break;
 
-                case "--tenant-id":
-                case "-t":
-                    (settings as OneDriveDownloadAppSettings)!.EntraId.TenantId = args[++i];
-                    break;
-
                 case "--client-id":
                 case "-c":
                     (settings as OneDriveDownloadAppSettings)!.EntraId.ClientId = args[++i];
-                    break;
-
-                case "--client-secret":
-                case "-s":
-                    (settings as OneDriveDownloadAppSettings)!.EntraId.ClientSecret = args[++i];
                     break;
 
                 default:

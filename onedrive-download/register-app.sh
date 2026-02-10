@@ -2,22 +2,15 @@
 set -euo pipefail
 
 # register-app.sh
+#
 # Registers an Entra ID (Azure AD) application for the OneDrive Download MCP sample.
+#
 # Features:
 # - Display name: mcp-onedrivedownload-<random 4 digits>
-# - SPA redirect URI: http://localhost
-# - Adds Microsoft Graph application permission: Mail.Send
-# - Creates a client secret named: default
-# - Grants admin consent if caller has sufficient privileges.
+# - Adds Microsoft Graph delegate permissions: Files.Read.All, email, offline_access, openid, profile
 #
 # Requirements: Azure CLI (az)
-# Notes: Application permissions (Mail.Send) require admin consent. The script
-# attempts to grant consent but will not fail the whole run if that step lacks privileges.
 
-GRAPH_APP_ID="00000003-0000-0000-c000-000000000000" # Microsoft Graph
-REDIRECT_URI="http://localhost"
-SECRET_NAME="default"
-MAX_ATTEMPTS=5
 OUT_FILE=""
 
 msg() { echo -e "[register-app] $*"; }
@@ -55,16 +48,52 @@ if ! az account show >/dev/null 2>&1; then
   az login 1>/dev/null
 fi
 
-TENANT_ID=$(az account show --query tenantId -o tsv)
+TENANT_ID=common
 msg "Using tenant: $TENANT_ID"
 
-# Resolve the App Role ID for Microsoft Graph Files.SelectedOperations.Selected (Application permission)
-FILES_SELECTED_OPERATIONS_SELECTED_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "appRoles[?value=='Files.SelectedOperations.Selected' && contains(allowedMemberTypes, 'Application')].id" -o tsv)
-if [[ -z "$FILES_SELECTED_OPERATIONS_SELECTED_ROLE_ID" ]]; then
-  err "Could not resolve Files.SelectedOperations.Selected application permission ID from Microsoft Graph SP."
+GRAPH_APP_ID="00000003-0000-0000-c000-000000000000" # Microsoft Graph
+REDIRECT_URIS="['http://localhost','http://127.0.0.1','https://vscode.dev/redirect']"
+MAX_ATTEMPTS=5
+
+# Resolve email role ID (delegated permission)
+EMAIL_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "oauth2PermissionScopes[?value=='email' && type=='User'].id" -o tsv)
+if [[ -z "$EMAIL_ROLE_ID" ]]; then
+  err "Could not resolve email delegate permission ID from Microsoft Graph SP."
   exit 1
 fi
-msg "Resolved Files.SelectedOperations.Selected app role ID: $FILES_SELECTED_OPERATIONS_SELECTED_ROLE_ID"
+msg "Resolved email delegate permission ID: $EMAIL_ROLE_ID"
+
+# Resolve offline_access role ID (delegated permission)
+OFFLINE_ACCESS_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "oauth2PermissionScopes[?value=='offline_access' && type=='User'].id" -o tsv)
+if [[ -z "$OFFLINE_ACCESS_ROLE_ID" ]]; then
+  err "Could not resolve offline_access delegate permission ID from Microsoft Graph SP."
+  exit 1
+fi
+msg "Resolved offline_access delegate permission ID: $OFFLINE_ACCESS_ROLE_ID"
+
+# Resolve openid role ID (delegated permission)
+OPENID_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "oauth2PermissionScopes[?value=='openid' && type=='User'].id" -o tsv)
+if [[ -z "$OPENID_ROLE_ID" ]]; then
+  err "Could not resolve openid delegate permission ID from Microsoft Graph SP."
+  exit 1
+fi
+msg "Resolved openid delegate permission ID: $OPENID_ROLE_ID"
+
+# Resolve profile role ID (delegated permission)
+PROFILE_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "oauth2PermissionScopes[?value=='profile' && type=='User'].id" -o tsv)
+if [[ -z "$PROFILE_ROLE_ID" ]]; then
+  err "Could not resolve profile delegate permission ID from Microsoft Graph SP."
+  exit 1
+fi
+msg "Resolved profile delegate permission ID: $PROFILE_ROLE_ID"
+
+# Resolve Files.Read.All role ID (delegated permission)
+FILES_READ_ALL_ROLE_ID=$(az ad sp show --id "$GRAPH_APP_ID" --query "oauth2PermissionScopes[?value=='Files.Read.All' && type=='User'].id" -o tsv)
+if [[ -z "$FILES_READ_ALL_ROLE_ID" ]]; then
+  err "Could not resolve Files.Read.All delegate permission ID from Microsoft Graph SP."
+  exit 1
+fi
+msg "Resolved Files.Read.All delegate permission ID: $FILES_READ_ALL_ROLE_ID"
 
 # Generate a unique app name
 attempt=1
@@ -88,7 +117,8 @@ msg "App display name will be: $APP_NAME"
 msg "Creating app registration..."
 APP_CREATE_OUTPUT=$(az ad app create \
   --display-name "$APP_NAME" \
-  --sign-in-audience AzureADMyOrg \
+  --sign-in-audience AzureADandPersonalMicrosoftAccount \
+  --is-fallback-public-client true \
   -o json)
 
 APP_ID=$(echo "$APP_CREATE_OUTPUT" | az jq -r '.appId' 2>/dev/null || echo "$APP_CREATE_OUTPUT" | grep -o '"appId": *"[^"]*"' | head -n1 | cut -d '"' -f4)
@@ -101,9 +131,9 @@ fi
 msg "Created app. Application (client) ID: $APP_ID"
 msg "App object ID: $APP_OBJECT_ID"
 
-# Apply SPA redirect URI
-msg "Applying SPA redirect URI via update..."
-az ad app update --id "$APP_ID" --set "spa={'redirectUris': ['$REDIRECT_URI']}" 1>/dev/null
+# Apply Public Client redirect URI
+msg "Applying public client redirect URI via update..."
+az ad app update --id "$APP_ID" --set "publicClient={'redirectUris':$REDIRECT_URIS}" 1>/dev/null
 
 # Prepare requiredResourceAccess JSON dynamically
 REQ_JSON=$(cat <<EOF
@@ -111,7 +141,11 @@ REQ_JSON=$(cat <<EOF
   {
     "resourceAppId": "$GRAPH_APP_ID",
     "resourceAccess": [
-      { "id": "$FILES_SELECTED_OPERATIONS_SELECTED_ROLE_ID", "type": "Role" }
+      { "id": "$EMAIL_ROLE_ID", "type": "Scope" },
+      { "id": "$OFFLINE_ACCESS_ROLE_ID", "type": "Scope" },
+      { "id": "$OPENID_ROLE_ID", "type": "Scope" },
+      { "id": "$PROFILE_ROLE_ID", "type": "Scope" },
+      { "id": "$FILES_READ_ALL_ROLE_ID", "type": "Scope" }
     ]
   }
 ]
@@ -131,20 +165,6 @@ az ad sp create --id "$APP_ID" 1>/dev/null || true
 SP_OBJECT_ID=$(az ad sp show --id "$APP_ID" --query id -o tsv || true)
 msg "Service principal object ID: ${SP_OBJECT_ID:-<unknown>}"
 
-# Grant admin consent
-msg "Granting admin consent..."
-sleep 30
-az ad app permission admin-consent --id "$APP_ID"
-
-# Create client secret
-msg "Creating client secret named '$SECRET_NAME'..."
-SECRET_JSON=$(az ad app credential reset --id "$APP_ID" --append --display-name "$SECRET_NAME" --years 1 -o json)
-CLIENT_SECRET_VALUE=$(echo "$SECRET_JSON" | az jq -r '.password' 2>/dev/null || echo "$SECRET_JSON" | grep -o '"password": *"[^"]*"' | head -n1 | cut -d '"' -f4)
-if [[ -z "$CLIENT_SECRET_VALUE" ]]; then
-  err "Failed to obtain client secret value. Raw: $SECRET_JSON"
-  exit 1
-fi
-
 # Simple JSON escaping for quotes and backslashes
 json_escape() {
   local s="$1"
@@ -158,16 +178,16 @@ JSON_OUTPUT=$(cat <<JSON
 {
   "displayName": "$(json_escape "$APP_NAME")",
   "tenantId": "$(json_escape "$TENANT_ID")",
-  "clientId": "$(json_escape "$APP_ID")",
-  "clientSecret": "$(json_escape "$CLIENT_SECRET_VALUE")"
+  "clientId": "$(json_escape "$APP_ID")"
 }
 JSON
 )
 
 if [[ -n "$OUT_FILE" ]]; then
   printf '%s\n' "$JSON_OUTPUT" > "$OUT_FILE"
-  msg "JSON output written to $OUT_FILE (contains clientSecret). Secure this file and consider restricting permissions (e.g. chmod 600)."
+  msg "JSON output written to $OUT_FILE. Secure this file and consider restricting permissions (e.g. chmod 600)."
 else
   printf '%s\n' "$JSON_OUTPUT"
-  msg "JSON output emitted above. Store clientSecret securely; it cannot be retrieved later."
+  msg "JSON output emitted above."
+
 fi

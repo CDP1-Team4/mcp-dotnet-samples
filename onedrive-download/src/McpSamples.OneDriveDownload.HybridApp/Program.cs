@@ -39,10 +39,9 @@ builder.Services.AddSingleton<GraphServiceClient>(sp =>
     {
         TenantId = entraId.TenantId,
         ClientId = entraId.ClientId,
+        TokenCachePersistenceOptions = new TokenCachePersistenceOptions() { Name = "onedrive-download" }
     };
-    TokenCredential credential = entraId.UseManagedIdentity
-                               ? new ManagedIdentityCredential(ManagedIdentityId.FromUserAssignedClientId(entraId.UserAssignedClientId))
-                               : new InteractiveBrowserCredential(options);
+    TokenCredential credential = new InteractiveBrowserCredential(options);
 
     string[] scopes = [ "Files.Read.All" ];
     var client = new GraphServiceClient(credential, scopes);
