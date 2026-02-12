@@ -12,6 +12,6 @@
 
     "EntraId__TenantId": "common",
     "EntraId__ClientId": "{{CLIENT_ID}}",
-    "EntraId__UseManagedIdentity": "false"
+    "EntraId__ApplicationIdUri": "{{APPLICATION_ID_URI}}"
   }
 }

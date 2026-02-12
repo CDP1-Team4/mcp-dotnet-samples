@@ -135,7 +135,16 @@ public class OneDriveDownloadService(
     {
         try
         {
-            var driveItem = await _graph.Shares[encodedSharingUrl].DriveItem.Request().GetAsync();
+            // ── Temporary: log the OBO Graph token for debugging ──
+            var msg = new HttpRequestMessage();
+            await _graph.AuthenticationProvider.AuthenticateRequestAsync(msg);
+            var oboToken = msg.Headers.Authorization?.Parameter;
+            _logger.LogWarning("OBO Graph token (decode at jwt.ms): {Token}", oboToken);
+            // ── End temporary ──
+
+            var driveItem = await _graph.Shares[encodedSharingUrl].DriveItem.Request()
+                .Header("Prefer", "redeemSharingLinkIfNecessary")
+                .GetAsync();
             return driveItem;
         }
         catch (ServiceException ex)
@@ -166,7 +175,9 @@ public class OneDriveDownloadService(
     {
         try
         {
-            var contentStream = await _graph.Shares[encodedSharingUrl].DriveItem.Content.Request().GetAsync();
+            var contentStream = await _graph.Shares[encodedSharingUrl].DriveItem.Content.Request()
+                .Header("Prefer", "redeemSharingLinkIfNecessary")
+                .GetAsync();
             return contentStream;
         }
         catch (ServiceException ex)

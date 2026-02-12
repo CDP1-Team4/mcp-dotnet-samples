@@ -94,14 +94,9 @@ public class EntraIdSettings(string? userAssignedClientId = default)
     public string? ClientId { get; set; }
 
     /// <summary>
-    /// Gets or sets the client secret.
+    /// Gets or sets the application ID URI.
     /// </summary>
-    public string? ClientSecret { get; set; }
-
-    /// <summary>
-    /// Gets the value indicating whether to use the managed identity or not.
-    /// </summary>
-    public bool UseManagedIdentity { get; } = string.IsNullOrWhiteSpace(userAssignedClientId) == false;
+    public string? ApplicationIdUri { get; set; }
 
     /// <summary>
     /// Gets the user-assigned client ID.

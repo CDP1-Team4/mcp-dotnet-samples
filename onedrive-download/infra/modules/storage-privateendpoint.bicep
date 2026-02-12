@@ -7,7 +7,6 @@ param tags object = {}
 param enableBlob bool = true
 param enableQueue bool = false
 param enableTable bool = false
-param enableFile bool = false
 
 resource vnet 'Microsoft.Network/virtualNetworks@2021-08-01' existing = {
   name: virtualNetworkName
@@ -21,7 +20,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' existing 
 var blobPrivateDNSZoneName = 'privatelink.blob.${environment().suffixes.storage}'
 var queuePrivateDNSZoneName = 'privatelink.queue.${environment().suffixes.storage}'
 var tablePrivateDNSZoneName = 'privatelink.table.${environment().suffixes.storage}'
-var filePrivateDNSZoneName = 'privatelink.file.${environment().suffixes.storage}'
 
 // AVM module for Blob Private Endpoint with private DNS zone
 module blobPrivateEndpoint 'br/public:avm/res/network/private-endpoint:0.11.0' = if (enableBlob) {
@@ -122,39 +120,6 @@ module tablePrivateEndpoint 'br/public:avm/res/network/private-endpoint:0.11.0' 
   }
 }
 
-// AVM module for File Private Endpoint with private DNS zone
-module filePrivateEndpoint 'br/public:avm/res/network/private-endpoint:0.11.0' = if (enableFile) {
-  name: 'file-private-endpoint-deployment'
-  params: {
-    name: 'file-private-endpoint'
-    location: location
-    tags: tags
-    subnetResourceId: '${vnet.id}/subnets/${subnetName}'
-    privateLinkServiceConnections: [
-      {
-        name: 'filePrivateLinkConnection'
-        properties: {
-          privateLinkServiceId: storageAccount.id
-          groupIds: [
-            'file'
-          ]
-        }
-      }
-    ]
-    customDnsConfigs: []
-    // Creates private DNS zone and links
-    privateDnsZoneGroup: {
-      name: 'filePrivateDnsZoneGroup'
-      privateDnsZoneGroupConfigs: [
-        {
-          name: 'storageFileARecord'
-          privateDnsZoneResourceId: enableFile ? privateDnsZoneFileDeployment.outputs.resourceId : ''
-        }
-      ]
-    }
-  }
-}
-
 // AVM module for Blob Private DNS Zone
 module privateDnsZoneBlobDeployment 'br/public:avm/res/network/private-dns-zone:0.7.1' = if (enableBlob) {
   name: 'blob-private-dns-zone-deployment'
@@ -203,25 +168,6 @@ module privateDnsZoneTableDeployment 'br/public:avm/res/network/private-dns-zone
     virtualNetworkLinks: [
       {
         name: '${resourceName}-table-link-${take(toLower(uniqueString(resourceName, virtualNetworkName)), 4)}'
-        virtualNetworkResourceId: vnet.id
-        registrationEnabled: false
-        location: 'global'
-        tags: tags
-      }
-    ]
-  }
-}
-
-// AVM module for File Private DNS Zone
-module privateDnsZoneFileDeployment 'br/public:avm/res/network/private-dns-zone:0.7.1' = if (enableFile) {
-  name: 'file-private-dns-zone-deployment'
-  params: {
-    name: filePrivateDNSZoneName
-    location: 'global'
-    tags: tags
-    virtualNetworkLinks: [
-      {
-        name: '${resourceName}-file-link-${take(toLower(uniqueString(resourceName, virtualNetworkName)), 4)}'
         virtualNetworkResourceId: vnet.id
         registrationEnabled: false
         location: 'global'

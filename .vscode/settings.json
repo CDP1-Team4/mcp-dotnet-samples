@@ -2,6 +2,8 @@
   "chat.tools.autoApprove": true,
   "chat.agent.maxRequests": 100,
 
+  // "microsoft-authentication.implementation": "msal-no-broker",
+
   "azureFunctions.deploySubpath": "onedrive-download/src/McpSamples.OneDriveDownload.HybridApp/bin/Release/net9.0/publish",
   "azureFunctions.preDeployTask": "publish (functions)",
   "azureFunctions.projectSubpath": "onedrive-download/src/McpSamples.OneDriveDownload.HybridApp",

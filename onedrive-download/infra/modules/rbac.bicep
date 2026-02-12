@@ -6,14 +6,11 @@ param allowUserIdentityPrincipal bool = false // Flag to enable user identity ro
 param enableBlob bool = true
 param enableQueue bool = false
 param enableTable bool = false
-param enableFile bool = false
 
 // Define Role Definition IDs internally
 var storageRoleDefinitionId  = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b' //Storage Blob Data Owner role
 var queueRoleDefinitionId = '974c5e8b-45b9-4653-ba55-5f855dd0fb88' // Storage Queue Data Contributor role
 var tableRoleDefinitionId = '0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3' // Storage Table Data Contributor role
-var fileRoleDefinitionId = '0c867c2a-1d8c-454a-a3db-ab2ea1bdc8bb' // Storage File Data SMB Share Contributor role
-
 var monitoringRoleDefinitionId = '3913510d-42f4-4e42-8a64-420c390055eb' // Monitoring Metrics Publisher role ID
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = {
@@ -85,28 +82,6 @@ resource tableRoleAssignment_User 'Microsoft.Authorization/roleAssignments@2022-
   scope: storageAccount
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', tableRoleDefinitionId)
-    principalId: userIdentityPrincipalId // Use user identity ID
-    principalType: 'User' // User Identity is a User Principal
-  }
-}
-
-// Role assignment for Storage Account (File) - Managed Identity
-resource fileRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableFile) {
-  name: guid(storageAccount.id, managedIdentityPrincipalId, fileRoleDefinitionId) // Use managed identity ID
-  scope: storageAccount
-  properties: {
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', fileRoleDefinitionId)
-    principalId: managedIdentityPrincipalId // Use managed identity ID
-    principalType: 'ServicePrincipal' // Managed Identity is a Service Principal
-  }
-}
-
-// Role assignment for Storage Account (File) - User Identity
-resource fileRoleAssignment_User 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (enableFile && allowUserIdentityPrincipal && !empty(userIdentityPrincipalId)) {
-  name: guid(storageAccount.id, userIdentityPrincipalId, fileRoleDefinitionId)
-  scope: storageAccount
-  properties: {
-    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', fileRoleDefinitionId)
     principalId: userIdentityPrincipalId // Use user identity ID
     principalType: 'User' // User Identity is a User Principal
   }

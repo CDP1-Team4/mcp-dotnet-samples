@@ -120,28 +120,6 @@ resource mcpStreamablePostOperation 'Microsoft.ApiManagement/service/apis/operat
   }
 }
 
-// Create the download URL endpoint
-resource downloadOperation 'Microsoft.ApiManagement/service/apis/operations@2023-05-01-preview' = {
-  parent: mcpApi
-  name: 'download-get'
-  properties: {
-    displayName: 'Download File'
-    method: 'GET'
-    urlTemplate: '/download'
-    description: 'Endpoint that downloads files from OneDrive'
-  }
-}
-
-// Apply policy to bypass token validation for download
-resource downloadPolicy 'Microsoft.ApiManagement/service/apis/operations/policies@2023-05-01-preview' = {
-  parent: downloadOperation
-  name: 'policy'
-  properties: {
-    format: 'rawxml'
-    value: loadTextContent('downloads.policy.xml')
-  }
-}
-
 // Create the PRM (Protected Resource Metadata) endpoint - RFC 9728
 resource mcpPrmOperation 'Microsoft.ApiManagement/service/apis/operations@2023-05-01-preview' = {
   parent: mcpApi

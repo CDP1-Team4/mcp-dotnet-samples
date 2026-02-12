@@ -31,6 +31,11 @@ var msGraphAppId = graphAppId
 // VS Code app ID
 var vscodeAppId = 'aebc6443-996d-45c2-90f0-388ff96faa56'
 
+// Permission ID
+var delegatedUserReadPermissionId = 'e1fe6dd8-ba31-4d61-89e7-88639da4683d'
+var delegatedFilesReadAllPermissionId = 'df85f4d6-205c-4ac5-a5ea-6bf408dba283'
+var applicationMailSendPermissionId = 'b633e1c5-b582-4048-a93e-9f11b44c7e96'
+
 // Get the Microsoft Graph service principal so that the scope names
 // can be looked up and mapped to a permission ID
 resource msGraphSP 'Microsoft.Graph/servicePrincipals@v1.0' existing = {
@@ -53,9 +58,11 @@ var permissionId = guid(mcpAppUniqueName, 'user_impersonation')
 resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
   displayName: mcpAppDisplayName
   uniqueName: mcpAppUniqueName
-
   signInAudience: 'AzureADandPersonalMicrosoftAccount'
-
+  isFallbackPublicClient: true
+  identifierUris: [
+    'api://${mcpAppUniqueName}'
+  ]
   api: {
     oauth2PermissionScopes: [
       {
@@ -74,12 +81,11 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
       {
         appId: vscodeAppId
         delegatedPermissionIds: [
-          guid(mcpAppUniqueName, 'user_impersonation')
+          permissionId
         ]
       }
     ]
   }
-
   // Parameterized Microsoft Graph delegated scopes based on appScopes
   requiredResourceAccess: [
     {
@@ -87,22 +93,11 @@ resource mcpEntraApp 'Microsoft.Graph/applications@v1.0' = {
       resourceAccess: concat(scopes, roles)
     }
   ]
-
-//   spa: {
-//     redirectUris: [
-//       'https://${functionAppName}.azurewebsites.net/auth/callback'
-//     ]
-//   }
-
-  publicClient: {
+  spa: {
     redirectUris: [
-      'http://localhost'
-      'http://127.0.0.1'
-      'https://vscode.dev/redirect'
+      'https://${functionAppName}.azurewebsites.net/auth/callback'
     ]
   }
-
-  isFallbackPublicClient: true
 
   resource fic 'federatedIdentityCredentials@v1.0' = {
     name: '${mcpEntraApp.uniqueName}/msiAsFic'
@@ -119,21 +114,26 @@ resource applicationRegistrationServicePrincipal 'Microsoft.Graph/servicePrincip
   appId: mcpEntraApp.appId
 }
 
-// resource applicationDelegatePermissionForApp 'Microsoft.Graph/oauth2PermissionGrants@v1.0' = {
+resource oauth2PermissionGrant 'Microsoft.Graph/oauth2PermissionGrants@v1.0' = {
+  resourceId: msGraphSP.id
+  clientId: applicationRegistrationServicePrincipal.id
+  consentType: 'AllPrincipals'
+  scope: join(appScopes, ' ')
+}
+
+// resource applicationPermissionGrantForApp 'Microsoft.Graph/appRoleAssignedTo@v1.0' = {
 //   resourceId: msGraphSP.id
-//   clientId: applicationRegistrationServicePrincipal.id
-//   consentType: 'AllPrincipals'
-//   scope: 'Files.Read.All'
+//   appRoleId: applicationMailSendPermissionId
+//   principalId: applicationRegistrationServicePrincipal.id
 // }
 
-// resource applicationDelegatePermissionForUserAssignedIdentity 'Microsoft.Graph/oauth2PermissionGrants@v1.0' = {
+// resource applicationPermissionGrantForUserAssignedIdentity 'Microsoft.Graph/appRoleAssignedTo@v1.0' = {
 //   resourceId: msGraphSP.id
-//   clientId: applicationRegistrationServicePrincipal.id
-//   consentType: 'Principal'
+//   appRoleId: applicationMailSendPermissionId
 //   principalId: userAssignedIdentityPrincipleId
-//   scope: 'Files.Read.All'
 // }
 
 // Outputs
 output mcpAppId string = mcpEntraApp.appId
+output mcpAppIdUri string = 'api://${mcpAppUniqueName}'
 output mcpAppTenantId string = tenantId

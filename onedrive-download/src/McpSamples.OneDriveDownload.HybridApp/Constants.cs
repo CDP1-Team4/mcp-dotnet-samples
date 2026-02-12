@@ -44,4 +44,18 @@ public class Constants
     /// The default folder to save downloaded files.
     /// </summary>
     public const string DefaultDownloadFolder = "downloads";
+
+    /// <summary>
+    /// The Microsoft Graph scope for reading/writing files, used in the On-Behalf-Of (OBO) flow.
+    /// The Shares API requires Files.ReadWrite (minimum) for personal Microsoft accounts.
+    /// See: https://learn.microsoft.com/graph/api/shares-get
+    /// </summary>
+    public const string GraphFilesReadWriteAllScope = "https://graph.microsoft.com/Files.ReadWrite.All";
+
+    /// <summary>
+    /// The client assertion scope for Federated Identity Credentials (FIC).
+    /// The managed identity requests a token whose audience matches the FIC
+    /// audience configured on the app registration (api://AzureADTokenExchange).
+    /// </summary>
+    public const string ClientAssertionScope = "api://AzureADTokenExchange/.default";
 }

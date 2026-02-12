@@ -24,22 +24,22 @@ param azdServiceName string
 @allowed(['SystemAssigned', 'UserAssigned'])
 param identityType string = 'UserAssigned'
 
+param entraAppId string
+param entraAppIdUri string
+param entraAppTenantId string = tenant().tenantId
+
 var applicationInsightsIdentity = 'ClientId=${identityClientId};Authorization=AAD'
 var kind = 'functionapp,linux'
 
 // Create base application settings
 var baseAppSettings = {
-  FUNCTIONS_EXTENSION_VERSION: '~4'
-//   FUNCTIONS_WORKER_RUNTIME: runtimeName
-  WEBSITE_RUN_FROM_PACKAGE: '1'
-
   // Only include required credential settings unconditionally
-  AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${stg.name};AccountKey=${stg.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
   AzureWebJobsStorage__credential: 'managedidentity'
   AzureWebJobsStorage__clientId: identityClientId
   
   // Application Insights settings are always included
   APPLICATIONINSIGHTS_AUTHENTICATION_STRING: applicationInsightsIdentity
+  APPLICATIONINSIGHTS_CONNECTION_STRING: applicationInsights.properties.ConnectionString
 }
 
 // Dynamically build storage endpoint settings based on feature flags
@@ -51,9 +51,9 @@ var fileSettings = enableFile ? { AzureWebJobsStorage__fileServiceUri: stg.prope
 // Merge all app settings
 var allAppSettings = union(
   appSettings,
-//   blobSettings,
-//   queueSettings,
-//   tableSettings,
+  blobSettings,
+  queueSettings,
+  tableSettings,
   fileSettings,
   baseAppSettings
 )
@@ -67,7 +67,7 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 }
 
 // Create a Flex Consumption Function App to host the MCP server
-module mcp 'br/public:avm/res/web/site:0.21.0' = {
+module mcp 'br/public:avm/res/web/site:0.15.1' = {
   name: '${serviceName}-flex-consumption'
   params: {
     kind: kind
@@ -104,42 +104,14 @@ module mcp 'br/public:avm/res/web/site:0.21.0' = {
     siteConfig: {
       alwaysOn: false
     }
-    virtualNetworkSubnetResourceId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : null
-    configs: [
-      {
-        name: 'appsettings'
-        applicationInsightResourceId: applicationInsights.id
-        storageAccountResourceId: stg.id
-        storageAccountUseIdentityAuthentication: true
-        properties: union(allAppSettings, {
-          UseHttp: 'true'
-          UseAzureStorage: 'true'
-
-          AZURE_CLIENT_ID: identityClientId
-
-          AzureStorage__ConnectionString: 'DefaultEndpointsProtocol=https;AccountName=${stg.name};AccountKey=${stg.listKeys().keys[0].value};EndpointSuffix=${environment().suffixes.storage}'
-
-          EntraId__TenantId: 'common'
-          EntraId__ClientId: identityClientId
-          EntraId__UseManagedIdentity: 'true'
-
-          STORAGE_DOWNLOAD_MOUNT: '/mounts/downloads'
-        })
-      }
-      {
-        name: 'azurestorageaccounts'
-        properties: {
-          'download-storage': {
-            type: 'AzureFiles'
-            protocol: 'Smb'
-            accessKey: stg.listKeys().keys[0].value
-            accountName: stg.name
-            shareName: 'downloads'
-            mountPath: '/mounts/downloads'
-          }
-        }
-      }
-    ]
+    virtualNetworkSubnetId: !empty(virtualNetworkSubnetId) ? virtualNetworkSubnetId : null
+    appSettingsKeyValuePairs: union(allAppSettings, {
+      UseHttp: true
+      AZURE_CLIENT_ID: identityClientId
+      EntraId__TenantId: entraAppTenantId
+      EntraId__ClientId: entraAppId
+      EntraId__ApplicationIdUri: entraAppIdUri
+    })
   }
 }
 
